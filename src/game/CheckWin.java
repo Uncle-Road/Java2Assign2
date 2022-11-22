@@ -1,10 +1,10 @@
 package game;
 
-public class Check {
+public class CheckWin {
     public static int Check(int[][] board) {
         //0 continues 1 play1 win 2 play2 win 3 peace
         if (win(board, 1)) return 1;
-        if (win(board, 2)) return 2;
+        if (win(board, -1)) return 2;
         for(int i = 0;i< 3;i++){
             for (int j = 0;j<3;j++){
                 if (board[i][j]== 0){

@@ -21,7 +21,7 @@ public class DrawXO implements Initializable {
     private static boolean TURN = false;
 
     @FXML
-    private Pane base_square;
+    private static Pane base_square;
 
     @FXML
     private Rectangle game_panel;
@@ -34,7 +34,7 @@ public class DrawXO implements Initializable {
         });
     }
 
-    class CirclePane extends Pane {
+    public static class CirclePane extends Pane {
         public CirclePane(int i, int j) {
             Circle circle = new Circle();
             circle.setCenterX(i * BOUND + BOUND / 2.0 + OFFSET);
@@ -47,7 +47,7 @@ public class DrawXO implements Initializable {
         }
     }
 
-    class XPane extends Pane{
+    public static class XPane extends Pane{
         public XPane(int i, int j) {
             Line line_a = new Line();
             Line line_b = new Line();
@@ -70,7 +70,7 @@ public class DrawXO implements Initializable {
         }
     }
 
-    class ChessBoard extends StackPane {
+    public static class ChessBoard extends StackPane {
         int[][] chessBoard = new int[3][3];
         GridPane recGridPane = new GridPane();
 
