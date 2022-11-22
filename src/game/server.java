@@ -1,5 +1,6 @@
+package game;
+
 import java.io.*;
-import java.nio.file.Paths;
 import java.util.*;
 import java.net.*;
 
@@ -78,19 +79,32 @@ public class server {
 
 }
 
-class player{
-    String name;
-    String password;
-    int num_win;
-    int num_games;
+//
 
-    public player( String name,
-            String password,
-            int num_win,
-            int num_games){
-        this.name = name;
-        this.password = password;
-        this.num_win = num_win;
-        this.num_games = num_games;
+class serverThread extends Thread {
+    Socket client;
+    server server;
+
+    public serverThread(Socket client, server server) {
+        this.client = client;
+        this.server = server;
+    }
+
+    public void run() {
+        try {
+            String inStr;
+            BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+            while ((inStr = in.readLine()) != null) {
+                System.out.println(inStr);
+//                server.rec(inStr, client);
+            }
+        } catch (IOException e) {
+            try {
+//                server.ex(client);
+                System.out.println("break");
+            } finally {
+
+            }
+        }
     }
 }
