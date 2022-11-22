@@ -1,10 +1,12 @@
 package game;
 
+import java.io.IOException;
+import java.net.Socket;
+
 import packets.ClientPlayPacket;
 import packets.UpdatePacket;
 
-import java.io.IOException;
-import java.net.Socket;
+
 
 public class ClientGame extends Game {
     private Socket socket;

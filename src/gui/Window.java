@@ -1,11 +1,11 @@
 package gui;
 
-import game.Game;
-
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.*;
+
+import game.Game;
 
 public class Window extends JFrame {
     private Game game;
@@ -14,7 +14,7 @@ public class Window extends JFrame {
         this.game = game;
         setSize(w, h);
         setResizable(false);
-        getContentPane().setPreferredSize(new Dimension(w,h));
+        getContentPane().setPreferredSize(new Dimension(w, h));
         pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

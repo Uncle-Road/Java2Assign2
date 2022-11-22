@@ -181,9 +181,7 @@ public class Server {
                             service2.LeavingJudge();
                         }
                         in.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
+                    } catch (IOException | InterruptedException e) {
                         e.printStackTrace();
                     }
                 }

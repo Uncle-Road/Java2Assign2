@@ -4,8 +4,11 @@ import gui.GameWindow;
 import gui.Window;
 
 public abstract class Game {
+    @SuppressWarnings("checkstyle:MultipleVariableDeclarations")
     public static final int WIDTH = 600, HEIGHT = 600;
+    @SuppressWarnings("checkstyle:MultipleVariableDeclarations")
     public static final int FIELD_WIDTH = WIDTH / 3, FIELD_HEIGHT = HEIGHT / 3;
+    @SuppressWarnings("checkstyle:MultipleVariableDeclarations")
     public static final int FREE = 0, PLAYER_ONE = 1, PLAYER_TWO = 2;
     protected static final int PORT = 4444;
     private Window window;
