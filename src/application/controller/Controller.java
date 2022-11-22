@@ -18,16 +18,18 @@ public class Controller implements Initializable {
     private static final int BOUND = 90;
     private static final int OFFSET = 15;
 
+    private static boolean TURN = false;
+
+    private static final int[][] chessBoard = new int[3][3];
+    private static final boolean[][] flag = new boolean[3][3];
+
     @FXML
     private Pane base_square;
 
     @FXML
     private Rectangle game_panel;
 
-    private static boolean TURN = false;
 
-    private static final int[][] chessBoard = new int[3][3];
-    private static final boolean[][] flag = new boolean[3][3];
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
