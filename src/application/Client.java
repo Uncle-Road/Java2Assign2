@@ -23,8 +23,13 @@ public class Client implements Runnable {
             e.printStackTrace();
         }
         String myMove = x + "," + y + "," + side;
-        out.println(myMove);
-        out.flush();
+        if(!myMove.equals("")){
+            out.println(myMove);
+            out.flush();
+        }else {
+            System.out.println("no move");
+        }
+
     }
 
     public void playGame() {

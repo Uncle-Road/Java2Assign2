@@ -5,18 +5,15 @@ public class CheckWin {
     private static final int[][] board = new int[3][3];
 
     public void move(String index) {
-        int x = Integer.parseInt(String.valueOf(index.charAt(0)));
-        int y = Integer.parseInt(String.valueOf(index.charAt(2)));
-        int side = Integer.parseInt(String.valueOf(index.charAt(4)));
-        board[x][y] = side;
-        if (check() == 1) {
-            System.out.println("Game over, winner is O-Player");
-        } else if (check() == 2) {
-            System.out.println("Game over, winner is X-Player");
-        } else if (check() == 3) {
-            System.out.println("Game over, there is no winner");
+        board[Integer.parseInt(String.valueOf(index.charAt(0)))][Integer.parseInt(String.valueOf(index.charAt(2)))] = Integer.parseInt(String.valueOf(index.charAt(4)));;
+        switch (check()){
+            case 1:
+                System.out.println("Game over, winner is O-Player");
+            case 2:
+                System.out.println("Game over, winner is X-Player");
+            case 3:
+                System.out.println("Game over, there is no winner");
         }
-
     }
 
     public int check() {

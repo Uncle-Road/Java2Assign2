@@ -23,25 +23,29 @@ public class Server {
 
     public void readFile() throws IOException {
         String filePath = archive;
-        try (FileInputStream fis = new FileInputStream(filePath);
-             InputStreamReader isr = new InputStreamReader(fis, "gb2312");) {
-            bReader = new BufferedReader(isr);
-            char[] cbuf = new char[16];
-            int file_len = bReader.read(cbuf);
+        if (!archive.equals("")){
+            try (FileInputStream fis = new FileInputStream(filePath);
+                 InputStreamReader isr = new InputStreamReader(fis, "gb2312");) {
+                bReader = new BufferedReader(isr);
+                char[] cbuf = new char[16];
+                int file_len = bReader.read(cbuf);
+//            System.out.println(file_len);
+//            System.out.println(cbuf);
 
-            System.out.println(file_len);
-            System.out.println(cbuf);
-
-        } catch (FileNotFoundException e) {
+            } catch (FileNotFoundException e) {
+                System.out.println("The pathname does not exist.");
+                e.printStackTrace();
+            } catch (UnsupportedEncodingException e) {
+                System.out.println("The Character Encoding is not supported.");
+                e.printStackTrace();
+            } catch (IOException e) {
+                System.out.println("Failed or interrupted when doing the I/O operations");
+                e.printStackTrace();
+            }
+        }else {
             System.out.println("The pathname does not exist.");
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
-            System.out.println("The Character Encoding is not supported.");
-            e.printStackTrace();
-        } catch (IOException e) {
-            System.out.println("Failed or interrupted when doing the I/O operations");
-            e.printStackTrace();
         }
+
     }
 
     public void writeFile() throws IOException {
@@ -87,23 +91,27 @@ public class Server {
             playerList.put(name, player);
         }
         readFile();
-
+        System.out.println("waiting for the player to join....");
         while (true) {
             players = new ArrayList<>();
             CheckWin checkWin = new CheckWin();
             while (players.size() < 2) {
                 Socket socket = serverSocket.accept();
                 Socket clientSocket = receiverSocket.accept();
+
                 new Thread(() -> {
                     Scanner in = null;
                     PrintWriter out = null;
                     try {
                         in = new Scanner(clientSocket.getInputStream());
-                        out = new PrintWriter(clientSocket.getOutputStream());
-                    } catch (IOException exception) {
-                        exception.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-
+                    try {
+                        out = new PrintWriter(clientSocket.getOutputStream());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     out.println("waiting");
                     out.flush();
 
@@ -114,11 +122,13 @@ public class Server {
                                 return;
                             }
                             String msg = in.nextLine();
-//                                System.out.println("Msg from client: " + msg);
                             Thread.sleep(100);
-                            out.println(msg);
-                            out.flush();
-//                                System.out.println("msg sent");
+                            if (msg.equals("")){
+                                System.out.println("message is null");
+                            }else {
+                                out.println(msg);
+                                out.flush();
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                             break;
@@ -126,6 +136,7 @@ public class Server {
                     }
                 }).start();
                 players.add(socket);
+
                 if (players.size() < 2) {
                     PrintWriter out = new PrintWriter(socket.getOutputStream());
                     out.println("Only 1 player now, waiting...");
@@ -137,14 +148,20 @@ public class Server {
                     out2.println("2, 2 players now");
                     out1.flush();
                     out2.flush();
+                }else {
+                    System.out.println("There are more than two player , please waiting");
                 }
-                System.out.println("player" + players.size() + " connected");
+                if(players.size()>0){
+                    System.out.println("player" + players.size() + " connected");
+                }else {
+                    System.out.println("no player connected");
+                }
             }
 
-            ChessService chessService1 = new ChessService(players.get(0), players.get(1), checkWin);
-            ChessService chessService2 = new ChessService(players.get(1), players.get(0), checkWin);
-            Thread thread1 = new Thread(chessService1);
-            Thread thread2 = new Thread(chessService2);
+            Service service1 = new Service(players.get(0), players.get(1), checkWin);
+            Service service2 = new Service(players.get(1), players.get(0), checkWin);
+            Thread thread1 = new Thread(service1);
+            Thread thread2 = new Thread(service2);
             thread1.start();
             thread2.start();
 
@@ -159,13 +176,15 @@ public class Server {
                         String msg = in.nextLine();
                         Thread.sleep(300);
                         if (msg.equals("Close")) {
-                            System.out.println("Player is leaving");
-                            chessService1.verify();
-                            chessService2.verify();
+                            System.out.println("Player leaving the game");
+                            service1.LeavingJudge();
+                            service2.LeavingJudge();
                         }
                         in.close();
-                    } catch (IOException | InterruptedException exception) {
-                        exception.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }).start();

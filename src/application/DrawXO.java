@@ -39,12 +39,16 @@ public class DrawXO implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Client client = null;
+
+        Socket socket = null;
         try {
-            Socket socket = new Socket("localhost", 8884);
-            client = new Client(socket);
-        } catch (IOException exception) {
-            exception.printStackTrace();
+            socket = new Socket("localhost", 8884);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+
+        client = new Client(socket);
+
         Client finalClient = client;
         Thread thread = new Thread(finalClient);
         thread.start();
@@ -66,11 +70,13 @@ public class DrawXO implements Initializable {
                     break;
                 }
 
+
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+
 
                 String enemyMove = finalClient.getEnemyMove();
 
@@ -88,7 +94,6 @@ public class DrawXO implements Initializable {
                         } else if (MYTURN == 2) {
                             TURN = false;
                         }
-
                         flag2 = false;
                     } else if (enemyMove.length() == 5) {
                         int enemyX = Integer.parseInt(String.valueOf(enemyMove.charAt(0)));

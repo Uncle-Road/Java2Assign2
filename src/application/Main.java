@@ -48,15 +48,24 @@ public class Main extends Application {
             }).start();
 
             primaryStage.setOnCloseRequest(event -> {
+
+                Socket closeSocket = null;
                 try {
-                    Socket closeSocket = new Socket("localhost", 8885);
-                    PrintWriter out = new PrintWriter(closeSocket.getOutputStream());
-                    out.println("Close");
+                    closeSocket = new Socket("localhost", 8885);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                PrintWriter out = null;
+                try {
+                    out = new PrintWriter(closeSocket.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                out.println("Close");
                     out.flush();
                     System.out.println("Close");
                     System.exit(0);
-                } catch (Exception ignored) {
-                }
+
             });
         } catch (Exception e) {
             e.printStackTrace();
